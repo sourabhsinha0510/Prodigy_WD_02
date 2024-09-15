@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch with Laps</title>
+</head>
+<body>
+    <div class="stopwatch">
+        <div class="display">
+            <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+        </div>
+        <div class="controls">
+            <button id="start">Start</button>
+            <button id="stop">Stop</button>
+            <button id="reset">Reset</button>
+            <button id="lap">Lap</button>
+        </div>
+        <div class="laps">
+            <h2>Laps</h2>
+            <ul id="lap-list"></ul>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+<style>
+   body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.stopwatch {
+    text-align: center;
+}
+
+.display {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.controls button {
+    font-size: 1rem;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#start {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#stop {
+    background-color: #f44336;
+    color: white;
+}
+
+#reset {
+    background-color: #008CBA;
+    color: white;
+}
+
+#lap {
+    background-color: #FFC107;
+    color: white;
+}
+
+.laps {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.laps h2 {
+    margin-bottom: 10px;
+}
+
+.laps ul {
+    list-style: none;
+    padding: 0;
+}
+
+.laps li {
+    border-bottom: 1px solid #ddd;
+    padding: 5px 0;
+}
+
+</style>
+<script>
+   let timer;
+let hours = 0, minutes = 0, seconds = 0;
+const displayHours = document.getElementById('hours');
+const displayMinutes = document.getElementById('minutes');
+const displaySeconds = document.getElementById('seconds');
+const lapList = document.getElementById('lap-list');
+
+document.getElementById('start').addEventListener('click', () => {
+    clearInterval(timer);
+    timer = setInterval(updateTime, 1000);
+});
+
+document.getElementById('stop').addEventListener('click', () => {
+    clearInterval(timer);
+});
+
+document.getElementById('reset').addEventListener('click', () => {
+    clearInterval(timer);
+    hours = 0;
+    minutes = 0;
+    seconds = 0;
+    updateDisplay();
+    lapList.innerHTML = '';
+});
+
+document.getElementById('lap').addEventListener('click', () => {
+    const lapTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    const lapItem = document.createElement('li');
+    lapItem.textContent = lapTime;
+    lapList.appendChild(lapItem);
+});
+
+function updateTime() {
+    seconds++;
+    if (seconds >= 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes >= 60) {
+            minutes = 0;
+            hours++;
+        }
+    }
+    updateDisplay();
+}
+
+function updateDisplay() {
+    displayHours.textContent = String(hours).padStart(2, '0');
+    displayMinutes.textContent = String(minutes).padStart(2, '0');
+    displaySeconds.textContent = String(seconds).padStart(2, '0');
+}
+
+</script>
+</html>
